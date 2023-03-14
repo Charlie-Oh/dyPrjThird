@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>third</display-name>
+  
+<!--  <filter> -->
+<!--   	<filter-name>Filter01</filter-name> -->
+<!--   	<filter-class>com.filter.AuthenFilter</filter-class> -->
+<!--  </filter> -->
+<!--  <filter-mapping> -->
+<!--  	<filter-name>Filter01</filter-name> -->
+<!--  	<url-pattern>/18_01_filter01_process.jsp</url-pattern> -->
+<!--  </filter-mapping> -->
+ 
+<!--  <filter> -->
+<!--   	<filter-name>Filter02</filter-name> -->
+<!--   	<filter-class>com.filter.InitParamFilter</filter-class> -->
+<!--   	<init-param> -->
+<!--   		<param-name>param1</param-name> -->
+<!--   		<param-value>admin</param-value> -->
+<!--   	</init-param> -->
+<!--   	<init-param> -->
+<!--   		<param-name>param2</param-name> -->
+<!--   		<param-value>1234</param-value> -->
+<!--   	</init-param> -->
+<!--  </filter> -->
+<!--  <filter-mapping> -->
+<!--  	<filter-name>Filter02</filter-name> -->
+<!--  	<url-pattern>/18_01_filter02_process.jsp</url-pattern> -->
+<!--  </filter-mapping> -->
+
+<!-- 	<filter> -->
+<!-- 		<filter-name>Filter02_2</filter-name> -->
+<!-- 		<filter-class>com.filter.LogFileFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>filename</param-name> -->
+<!-- 			<param-value>monitor.log</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>Filter02_2</filter-name> -->
+<!-- 		<url-pattern>/18_01_filter02_process.jsp</url-pattern> -->
+<!-- 	</filter-mapping> -->
+
+<filter>
+	<filter-name>LoginCheck</filter-name>
+	<filter-class>com.filter.LoginCheckFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>LoginCheck</filter-name>
+	<url-pattern>/board/*</url-pattern>
+</filter-mapping>
+  
+  <!-- security-role: 시큐리티 역할 명시하기.
+  role-name: tomcat-users.xml에 있는 role-name이어야 한다.
+  auth-constraint설정이 되어 있을 경우 생략해도 가능하나 되도록 기술해줄 것. -->
+  
+  <security-role>
+  		<role-name>users</role-name>
+  </security-role>
+  <security-role>
+  		<role-name>manager</role-name>
+  </security-role>
+  
+  <!-- security-constraint: 시큐리티 제약사항 설정하기
+  		web-resource-collection: 웹 자원에 대한 접근을 설정하는 태그
+  		url-pattern: 접근 제한을 요청할 url목록 설정
+  		http-method: 차단하고자 하는 데이터 전송방식 지정(대문자로만) GET, POST, DELETE 등
+  		auth-constraint: 웹 자원에 접근할 수 있는 인증된 사용자(rolename)를 role-name태그를 이용하여 설정 -->
+ <security-constraint>
+	  	<web-resource-collection>
+	  		<web-resource-name>third</web-resource-name>
+	  		<url-pattern>/17_01_security01.jsp</url-pattern>
+	  		<url-pattern>/17_01_security02.jsp</url-pattern>
+	  		<url-pattern>/17_01_login.jsp</url-pattern>
+	  		<http-method>GET</http-method>
+	  	</web-resource-collection>
+	  <auth-constraint>
+	  		<description>웹자원에 접근할 수 있는 인증된 사용자(대소문자구분함)</description>
+	  		<role-name>manager</role-name>
+	  		<role-name>users</role-name>
+	  </auth-constraint>
+	  <user-data-constraint>
+	  		<transport-guarantee>NONE</transport-guarantee>
+	  </user-data-constraint>
+ </security-constraint>
+ 
+ <!-- login-config: 로그인페이지나 오류페이지 호출 설정
+ 		auth-method: 인증 기법을 설정
+ 		BASIC: 인증 로그인 창을 기본 창으로 자체 제공함
+ 		FORM: html의 form요소에 security 요소를 추가하여 인증을 처리하는 방법
+ 		form-login-config: auth-method를 FORM으로 설정하는 경우 로그인/로그인에러 페이지를 설정
+ 		form-login-page: 인증을 처리할 form요소가 있는 로그인 페이지 설정
+ 		form-error-page: 인증이 실패할 경우 처리할 에러 페이지 설정 -->
+ <login-config>
+ 	<!-- <auth-method>BASIC</auth-method> -->
+ 	<auth-method>FORM</auth-method>
+ 	<form-login-config>
+ 		<form-login-page>/17_01_loginForm.jsp</form-login-page>
+ 		<form-error-page>/17_01_login_failed.jsp</form-error-page>
+ 	</form-login-config>
+ </login-config>
+ 
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+</web-app>
